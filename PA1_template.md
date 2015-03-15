@@ -1,9 +1,4 @@
----
-title: 'Reproducible Research: Peer Assessment 1'
-output:
-  html_document:
-    keep_md: yes
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
@@ -66,7 +61,7 @@ median(step$steps,na.rm=TRUE)
 hist(step$steps,xlab="In a day",ylab="no. of times in a day")
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
 
 
 ## What is the average daily activity pattern?
@@ -77,7 +72,7 @@ plot(row.names(t), t, type = "l", xlab = "5-min interval",
     ylab = "Average")
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 ```r
 max <- which.max(t)
@@ -90,11 +85,14 @@ names(max)
 
 
 ## Imputing missing values
+The missing values are imputed using a relatively simple R code. 
 
 ```r
-a <- sum(is.na(user_data))
-avg <- aggregate(steps ~ interval, data = user_data, FUN = mean)
-NAs <- numeric()
+## No. of NAs is found by finding the missing value and then summing. 
+a <- sum(is.na(user_data))  
+##To populate missing values, they are replaced with the mean values calculated over the interval. In the for loop the presence of NAs is being checked and the values are being placed in case an NA occurs.
+avg <- aggregate(steps ~ interval, data = user_data, FUN = mean)  
+NAs <- numeric()   
 for (i in 1:nrow(user_data)) {
     it <- user_data[i, ]
     if (is.na(it$steps)) {
@@ -107,10 +105,11 @@ for (i in 1:nrow(user_data)) {
 naya <- user_data
 naya$steps <- NAs
 st2 <- aggregate(steps ~ date,data = naya,sum, na.rm = TRUE)
+##The histogram is made and calculating the mean and median also let's us know whether or not there is any impact of imputing values.
 hist(st2$steps, main = "Steps in a day", xlab = "number of steps in a day")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
 ```r
 mean(st2$steps)
@@ -149,4 +148,4 @@ xyplot(steps ~ interval|day, step, type = "l", layout = c(1,2),
     xlab = "Period", ylab = "Steps")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 

@@ -39,10 +39,13 @@ names(max)
 
 
 ## Imputing missing values
+The missing values are imputed using a relatively simple R code. 
 ```{r}
-a <- sum(is.na(user_data))
-avg <- aggregate(steps ~ interval, data = user_data, FUN = mean)
-NAs <- numeric()
+## No. of NAs is found by finding the missing value and then summing. 
+a <- sum(is.na(user_data))  
+##To populate missing values, they are replaced with the mean values calculated over the interval. In the for loop the presence of NAs is being checked and the values are being placed in case an NA occurs.
+avg <- aggregate(steps ~ interval, data = user_data, FUN = mean)  
+NAs <- numeric()   
 for (i in 1:nrow(user_data)) {
     it <- user_data[i, ]
     if (is.na(it$steps)) {
@@ -55,6 +58,7 @@ for (i in 1:nrow(user_data)) {
 naya <- user_data
 naya$steps <- NAs
 st2 <- aggregate(steps ~ date,data = naya,sum, na.rm = TRUE)
+##The histogram is made and calculating the mean and median also let's us know whether or not there is any impact of imputing values.
 hist(st2$steps, main = "Steps in a day", xlab = "number of steps in a day")
 mean(st2$steps)
 median(st2$steps)
